@@ -1,0 +1,63 @@
+<?php
+session_start();
+include("db.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['username'] = $username;
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            $error = "❌ Wrong password!";
+        }
+    } else {
+        $error = "❌ User not found!";
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Puzzle Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card" style="max-width: 500px; margin: 50px auto;">
+      <h1>🧩 Puzzle Game</h1>
+      <h2>Welcome Back!</h2>
+      
+      <?php if (!empty($error)) echo "<p class='error-message'>$error</p>"; ?>
+      
+      <form method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit" style="width: 100%; margin-bottom: 15px; margin-top: 10px;">Login</button>
+      </form>
+
+      <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <p style="color: var(--text-secondary); margin-bottom: 15px;">Don't have an account?</p>
+        <a href="register.php" style="text-decoration: none; display: block;">
+          <button type="button" style="width: 100%; background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%); border: 2px solid rgba(99, 102, 241, 0.5); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);">
+            Create Account
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
