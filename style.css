@@ -198,45 +198,51 @@ form {
   z-index: 1;
 }
 
-/* Modern input fields */
+/* Modern input fields with high contrast */
 input[type="text"],
 input[type="password"],
+input[type="number"],
 select {
   width: 100%;
   padding: 16px 20px;
   margin: 12px 0;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 235, 59, 0.4);
+  background: #FFFFFF;
   border-radius: 16px;
-  font-size: 1em;
+  font-size: 1.1em;
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 500;
-  color: var(--light);
+  font-weight: 600;
+  color: #1A1B26;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 input[type="text"]::placeholder,
-input[type="password"]::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+input[type="password"]::placeholder,
+input[type="number"]::placeholder {
+  color: rgba(26, 27, 38, 0.4);
+  font-weight: 500;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="number"]:focus,
 select:focus {
   outline: none;
   border-color: var(--banana-yellow);
-  background: rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
   box-shadow: 
-    0 0 0 4px rgba(255, 235, 59, 0.15),
-    0 8px 24px rgba(255, 235, 59, 0.2);
+    0 0 0 4px rgba(255, 235, 59, 0.2),
+    0 4px 16px rgba(255, 235, 59, 0.3);
   transform: translateY(-2px);
 }
 
+/* Ensure select dropdown has proper styling */
 select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFE135' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFE135' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
   background-size: 20px;
@@ -244,9 +250,10 @@ select {
 }
 
 select option {
-  background: var(--medium);
-  color: var(--light);
+  background: #FFFFFF;
+  color: #1A1B26;
   padding: 12px;
+  font-weight: 500;
 }
 
 /* Gradient button with modern effects */
@@ -532,6 +539,13 @@ a:hover {
   body::before,
   body::after {
     font-size: 100px;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  select {
+    font-size: 1em;
   }
 }
 
