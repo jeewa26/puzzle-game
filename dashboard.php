@@ -98,7 +98,7 @@ $stats = $stmt->get_result()->fetch_assoc();
     </div>
 
     <div class="nav-links">
-      <a href="leadboard.php">🏆 View Leaderboard</a> | 
+      <a href="leaderboard.php">🏆 View Leaderboard</a> | 
       <a href="logout.php">🚪 Logout</a>
     </div>
   </div>
