@@ -23,6 +23,7 @@ $result = $conn->query($sql);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leaderboard - Puzzle Game</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="leaderboard-style.css">
 </head>
 <body>
   <div class="container">
@@ -86,9 +87,9 @@ $result = $conn->query($sql);
         </p>
       <?php } ?>
     </div>
-
+    
     <div class="nav-links">
-      <a href="dashboard.php">←  Back to Dashboard</a>
+      <a href="dashboard.php">← Back to Dashboard</a>
     </div>
   </div>
 </body>
