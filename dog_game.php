@@ -14,7 +14,7 @@
     <div class="stats-bar">
       <div class="stat-box">
         <div class="stat-label">Time</div>
-        <div class="stat-value" id="timer">30</div>
+        <div class="stat-value" id="timer">35</div>
       </div>
       <div class="stat-box">
         <div class="stat-label">Score</div>
@@ -135,11 +135,84 @@
       
       const finalMessage = score >= 50 ? "🏆 Amazing!" : score >= 30 ? "🎉 Good job!" : "💪 Keep trying!";
       
-      if (confirm(`⏱️ Time's up!\n\n${finalMessage}\nYour final score: ${score} points\n\nClick OK to return home.`)) {
-        window.location.href = "index.php";
-      } else {
-        window.location.href = "index.php";
-      }
+      // Create end game modal
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+      `;
+      
+      const modalContent = document.createElement('div');
+      modalContent.style.cssText = `
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 140, 66, 0.3);
+        border-radius: 32px;
+        padding: 48px 40px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.4s ease;
+      `;
+      
+      modalContent.innerHTML = `
+        <h2 style="font-family: 'Fredoka', sans-serif; color: #FF8C42; font-size: 2.5em; margin-bottom: 16px; text-shadow: 0 0 30px rgba(255, 140, 66, 0.6);">
+          ⏱️ Time's Up!
+        </h2>
+        <p style="font-size: 1.8em; color: #FFFFFF; margin: 16px 0; font-weight: 700;">
+          ${finalMessage}
+        </p>
+        <p style="font-size: 2.5em; color: #FF8C42; font-weight: 700; font-family: 'Fredoka', sans-serif; text-shadow: 0 0 20px rgba(255, 140, 66, 0.5); margin: 24px 0;">
+          Score: ${score}
+        </p>
+        
+        <div style="background: rgba(255, 235, 59, 0.15); border: 2px solid rgba(255, 235, 59, 0.3); border-radius: 20px; padding: 24px; margin: 32px 0;">
+          <p style="color: #FFD93D; font-size: 1.3em; font-weight: 700; margin-bottom: 12px;">
+            🍌 Want More Challenge?
+          </p>
+          <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.05em; line-height: 1.6;">
+            Login to play our <strong style="color: #FFEB3B;">Banana Puzzle Game</strong> with different difficulty levels and compete on the leaderboard!
+          </p>
+        </div>
+        
+        <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+          <button onclick="window.location.href='index.php'" style="flex: 1; min-width: 150px; background: linear-gradient(135deg, #FFEB3B 0%, #FFD93D 100%); color: #1A1B26; border: none; padding: 16px 24px; border-radius: 16px; font-size: 1.1em; font-weight: 700; font-family: 'Fredoka', sans-serif; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 16px rgba(255, 235, 59, 0.4); transition: all 0.3s ease;">
+            🍌 Login & Play
+          </button>
+          <button onclick="location.reload()" style="flex: 1; min-width: 150px; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 140, 66, 0.3); color: #FF8C42; padding: 16px 24px; border-radius: 16px; font-size: 1.1em; font-weight: 700; font-family: 'Fredoka', sans-serif; cursor: pointer; text-transform: uppercase; backdrop-filter: blur(10px); transition: all 0.3s ease;">
+            🔄 Play Again
+          </button>
+        </div>
+        
+        <style>
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 66, 0.5) !important;
+          }
+        </style>
+      `;
+      
+      modal.appendChild(modalContent);
+      document.body.appendChild(modal);
     }
 
     startGame();
