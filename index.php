@@ -49,6 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit" style="width: 100%; margin-bottom: 15px; margin-top: 10px;">Login</button>
       </form>
 
+      <a href="guest_game.php" style="display: inline-block; width: 100%; padding: 14px 28px; background: linear-gradient(135deg, #FFEB3B 0%, #FF8C42 100%); color: #1A1B26; text-decoration: none; border-radius: 12px; font-weight: 700; font-family: 'Fredoka', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 16px rgba(255, 235, 59, 0.3); transition: all 0.3s ease;">
+        🍌 Play as Guest (Beginner Mode)
+      </a>
+
       <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
         <p style="color: var(--text-secondary); margin-bottom: 15px;">Don't have an account?</p>
         <a href="register.php" style="text-decoration: none; display: block;">
