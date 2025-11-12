@@ -16,21 +16,34 @@ function startGame() {
         timeLeft = 20;
     }
 
-    document.getElementById("timer").innerText = "Time: " + timeLeft;
-    document.getElementById("message").innerText = "";
+    const timerEl = document.getElementById("timer");
+    if (timerEl) {
+        timerEl.innerText = timeLeft;
+        timerEl.style.color = "#FFEB3B"; // Reset to default color
+    }
+    const messageEl = document.getElementById("message");
+    if (messageEl) {
+        messageEl.innerText = "";
+        messageEl.className = "";
+    }
     getPuzzle();
 
     clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         timeLeft--;
-        document.getElementById("timer").innerText = "Time: " + timeLeft;
+        if (timerEl) {
+            timerEl.innerText = timeLeft;
+        }
         
         // Add warning color when time is low
-        const timerEl = document.getElementById("timer");
         if (timeLeft <= 10) {
-            timerEl.style.color = "var(--error)";
-            timerEl.style.borderColor = "rgba(239, 68, 68, 0.5)";
-            timerEl.style.background = "rgba(239, 68, 68, 0.1)";
+            if (timerEl) {
+                timerEl.style.color = "#FF6B6B";
+            }
+            const statBox = timerEl ? timerEl.closest(".stat-box") : null;
+            if (statBox) {
+                statBox.style.borderColor = "rgba(255, 107, 107, 0.5)";
+            }
         }
         
         if (timeLeft <= 0) {
@@ -41,53 +54,78 @@ function startGame() {
 }
 
 function getPuzzle() {
+    const puzzleDiv = document.getElementById("puzzle");
+    if (!puzzleDiv) return;
+    
+    puzzleDiv.innerHTML = '<div class="loading"></div><p class="loading-text">Loading puzzle...</p>';
+    
     fetch("https://marcconrad.com/uob/banana/api.php")
         .then(res => res.json())
         .then(data => {
             currentPuzzle = data;
-            document.getElementById("puzzle").innerHTML =
-                `<img src="${data.question}" alt="puzzle" width="300">`;
+            puzzleDiv.innerHTML = `<img src="${data.question}" alt="Math Puzzle">`;
+            const answerInput = document.getElementById("answer");
+            if (answerInput) {
+                answerInput.value = "";
+                answerInput.focus();
+            }
         })
         .catch(err => {
-            document.getElementById("puzzle").innerHTML = 
-                "<p style='color: var(--error);'>⚠️ Failed to load puzzle. Please refresh the page.</p>";
+            puzzleDiv.innerHTML = '<p class="error-text">⚠️ Failed to load puzzle. Please refresh the page.</p>';
             console.error(err);
         });
 }
 
 function submitAnswer() {
-    let userAnswer = document.getElementById("answer").value;
+    const answerInput = document.getElementById("answer");
+    if (!answerInput) return;
+    
+    let userAnswer = answerInput.value;
     
     if (userAnswer === "") {
-        showMessage("❌ Please enter an answer!", "error");
+        showMessage("Please enter an answer!", "warning");
+        return;
+    }
+    
+    const userAnswerNum = parseInt(userAnswer);
+    if (isNaN(userAnswerNum) || userAnswerNum < 0 || userAnswerNum > 9) {
+        showMessage("Please enter a number between 0 and 9!", "warning");
         return;
     }
     
     const messageEl = document.getElementById("message");
     
-    if (userAnswer == currentPuzzle.solution) {
+    if (userAnswerNum == currentPuzzle.solution) {
         score += 10;
         timeLeft += 5;
         updateScoreDisplay();
         
-        messageEl.style.color = "var(--success)";
-        messageEl.style.background = "rgba(16, 185, 129, 0.1)";
-        messageEl.innerText = "✅ Correct! +10 points, +5 seconds";
-        
+        showMessage("✅ Correct! +10 points, +5 seconds", "success");
         showNotification("✅ Correct Answer! +10 points", "success");
+        
+        // Load next puzzle after short delay
+        setTimeout(() => {
+            if (messageEl) {
+                messageEl.innerText = "";
+                messageEl.className = "";
+            }
+            getPuzzle();
+        }, 1500);
     } else {
         timeLeft -= 5;
         
-        messageEl.style.color = "var(--error)";
-        messageEl.style.background = "rgba(239, 68, 68, 0.1)";
-        messageEl.innerText = "❌ Wrong! -5 seconds (Correct answer: " + currentPuzzle.solution + ")";
-        
+        showMessage(`❌ Wrong! -5 seconds (Correct answer: ${currentPuzzle.solution})`, "error");
         showNotification("❌ Wrong Answer! -5 seconds", "error");
+        
+        // Load next puzzle after showing answer
+        setTimeout(() => {
+            if (messageEl) {
+                messageEl.innerText = "";
+                messageEl.className = "";
+            }
+            getPuzzle();
+        }, 2000);
     }
-    
-    document.getElementById("answer").value = "";
-    document.getElementById("answer").focus();
-    getPuzzle();
 }
 
 function updateScoreDisplay() {
@@ -119,32 +157,30 @@ function showNotification(message, type) {
 
 function showMessage(message, type) {
     const messageEl = document.getElementById("message");
-    messageEl.innerText = message;
+    if (!messageEl) return;
     
-    if (type === "error") {
-        messageEl.style.color = "var(--error)";
-        messageEl.style.background = "rgba(239, 68, 68, 0.1)";
-    }
+    messageEl.innerText = message;
+    messageEl.className = `message-${type}`;
 }
 
 function endGame() {
     clearInterval(timerInterval);
     
-    const finalMessage = `🎮 Game Over!\n\n` +
-                        `Your Score: ${score}\n` +
-                        `Difficulty: ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`;
-    
-    alert(finalMessage);
+    // Disable input and button
+    const answerInput = document.getElementById("answer");
+    const submitBtn = document.getElementById("submit-btn");
+    if (answerInput) answerInput.disabled = true;
+    if (submitBtn) submitBtn.disabled = true;
 
     fetch("save_score.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: "score=" + score + "&difficulty=" + difficulty
     }).then(() => {
-        window.location.href = "leadboard.php";
+        window.location.href = "leaderboard.php";
     }).catch(err => {
         console.error("Error saving score:", err);
-        window.location.href = "leadboard.php";
+        window.location.href = "leaderboard.php";
     });
 }
 
