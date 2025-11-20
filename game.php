@@ -15,7 +15,7 @@ $difficultyClass = 'difficulty-' . strtolower($difficulty);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🍌 Puzzle Game</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="guest-style-game.css">
+  <link rel="stylesheet" href="guest-game-style.css">
   <script>
     let difficulty = "<?php echo $difficulty; ?>";
   </script>
