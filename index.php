@@ -17,6 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($password, $row['password'])) {
             $_SESSION['username'] = $username;
+            
+            // Generate a secure token
+            $token = bin2hex(random_bytes(32)); // 64 character hex string
+            
+            // Store token in session
+            $_SESSION['auth_token'] = $token;
+            
+            // Set cookie with token (expires in 7 days)
+            setcookie('auth_token', $token, time() + (7 * 24 * 60 * 60), '/', '', false, true); // HttpOnly for security
+            
+            // Also set a readable cookie for presentation purposes
+            setcookie('user_token', $token, time() + (7 * 24 * 60 * 60), '/');
+            setcookie('username', $username, time() + (7 * 24 * 60 * 60), '/');
+            
             header("Location: dashboard.php");
             exit();
         } else {
@@ -32,13 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Puzzle Game</title>
+  <title>Login - Math Sprint</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <div class="card" style="max-width: 500px; margin: 50px auto;">
-      <h1>🧩 Puzzle Game</h1>
+      <h1>🧩 Math Sprint</h1>
       <h2>Welcome Back!</h2>
       
       <?php if (!empty($error)) echo "<p class='error-message'>$error</p>"; ?>
