@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🍌 Guest Banana Game</title>
+  <title>🍌 Guest Math Sprint</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="guest-game-style.css">
 </head>
 <body>
   <div class="game-container">
-    <h1>🍌 Banana Puzzle Game</h1>
+    <h1>🍌 Math Sprint</h1>
     <p class="guest-badge">Guest Mode - Beginner Level</p>
     
     <div class="stats-bar">
