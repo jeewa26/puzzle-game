@@ -404,6 +404,20 @@ form + br + form button:hover {
   z-index: 1;
 }
 
+/* Ensure input fields with id="answer" have dark text for visibility */
+input#answer[type="number"],
+input#answer[type="text"] {
+  color: #1A1B26 !important;
+  background: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+input#answer[type="number"]:focus,
+input#answer[type="text"]:focus {
+  color: #1A1B26 !important;
+  background: #FFFFFF !important;
+}
+
 #message {
   margin-top: 18px;
   padding: 14px;

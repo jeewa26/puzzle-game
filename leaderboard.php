@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$sql = "SELECT users.username, scores.score, scores.difficulty, scores.created_at
+$sql = "SELECT users.username, users.avatar, scores.score, scores.difficulty, scores.created_at
         FROM scores
         JOIN users ON scores.user_id = users.id
         ORDER BY scores.score DESC, scores.created_at ASC
@@ -21,8 +21,9 @@ $result = $conn->query($sql);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leaderboard - Puzzle Game</title>
+  <title>Leaderboard - Math Sprint</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="leaderboard-style.css">
 </head>
 <body>
   <div class="container">
@@ -60,8 +61,17 @@ $result = $conn->query($sql);
                 <?php } ?>
               </td>
               <td>
-                <strong><?php echo htmlspecialchars($row['username']); ?></strong>
-                <?php if ($isCurrentUser) echo '<span style="color: var(--primary); margin-left: 5px;">← You</span>'; ?>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <?php 
+                  $avatar_style = $row['avatar'] ?? 'avataaars';
+                  $avatar_url = "https://api.dicebear.com/7.x/{$avatar_style}/svg?seed=" . urlencode($row['username']);
+                  ?>
+                  <img src="<?php echo htmlspecialchars($avatar_url); ?>" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(255, 235, 59, 0.5); background: rgba(255, 255, 255, 0.1); padding: 2px;">
+                  <div>
+                    <strong><?php echo htmlspecialchars($row['username']); ?></strong>
+                    <?php if ($isCurrentUser) echo '<span style="color: var(--primary); margin-left: 5px;">← You</span>'; ?>
+                  </div>
+                </div>
               </td>
               <td>
                 <span class="difficulty-badge <?php echo $difficultyClass; ?>">
@@ -86,9 +96,9 @@ $result = $conn->query($sql);
         </p>
       <?php } ?>
     </div>
-
+    
     <div class="nav-links">
-      <a href="dashboard.php">←  Back to Dashboard</a>
+      <a href="dashboard.php">← Back to Dashboard</a>
     </div>
   </div>
 </body>

@@ -8,12 +8,17 @@ if (!isset($_SESSION['username'])) {
 }
 
 $username = $_SESSION['username'];
+$auth_token = $_SESSION['auth_token'] ?? $_COOKIE['auth_token'] ?? 'Not set';
+$user_token = $_COOKIE['user_token'] ?? 'Not set';
+$cookie_username = $_COOKIE['username'] ?? 'Not set';
 
-$stmt = $conn->prepare("SELECT id FROM users WHERE username=?");
+$stmt = $conn->prepare("SELECT id, avatar FROM users WHERE username=?");
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $user_id = $user['id'];
+$avatar_style = $user['avatar'] ?? 'avataaars';
+$avatar_url = "https://api.dicebear.com/7.x/{$avatar_style}/svg?seed=" . urlencode($username);
 
 $stmt = $conn->prepare("SELECT difficulty, score, created_at FROM scores WHERE user_id=? ORDER BY created_at DESC LIMIT 5");
 $stmt->bind_param("i", $user_id);
@@ -30,15 +35,20 @@ $stats = $stmt->get_result()->fetch_assoc();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Puzzle Game</title>
+  <title>Dashboard - Math Sprint</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="dashboard-style.css">
 </head>
 <body>
   <div class="container">
     <div class="welcome-header">
-      <h1>🧩 Puzzle Game Dashboard</h1>
-      <h2>Welcome back, <?php echo htmlspecialchars($username); ?>! 👋</h2>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px;">
+        <img src="<?php echo htmlspecialchars($avatar_url); ?>" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid #FFEB3B; background: rgba(255, 255, 255, 0.1); padding: 5px;">
+        <div>
+          <h1>🧩 Math Sprint Dashboard</h1>
+          <h2>Welcome back, <?php echo htmlspecialchars($username); ?>! 👋</h2>
+        </div>
+      </div>
     </div>
 
     <div class="stats-grid">
