@@ -13,7 +13,7 @@ $difficultyClass = 'difficulty-' . strtolower($difficulty);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🍌 Puzzle Game</title>
+  <title>🍌 Math Sprint</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="guest-game-style.css">
   <script>
@@ -23,7 +23,7 @@ $difficultyClass = 'difficulty-' . strtolower($difficulty);
 </head>
 <body>
   <div class="game-container">
-    <h1>🍌 Banana Puzzle Game</h1>
+    <h1>🍌 Math Sprint</h1>
     <div style="text-align: center; margin-bottom: 20px;">
       <span class="difficulty-badge <?php echo $difficultyClass; ?>">
         <?php echo ucfirst($difficulty); ?> Mode
@@ -42,21 +42,21 @@ $difficultyClass = 'difficulty-' . strtolower($difficulty);
     </div>
 
     <div id="gameArea">
-      <div class="puzzle-container">
-        <div id="puzzle">
-          <div class="loading"></div>
-          <p class="loading-text">Loading puzzle...</p>
-        </div>
-      </div>
-      
-      <input type="number" id="answer" placeholder="Enter your answer (0-9)" min="0" max="9">
-      
-      <button id="submit-btn" onclick="submitAnswer()">
-        Submit Answer ✓
-      </button>
-      
-      <p id="message"></p>
+  <div class="puzzle-container" style="background-image: url('images/puzzle-bg.jpg'); background-size: cover; background-position: center;">
+    <div id="puzzle">
+      <div class="loading"></div>
+      <p class="loading-text">Loading puzzle...</p>
     </div>
+  </div>
+  
+  <input type="number" id="answer" placeholder="Enter your answer (0-9)" min="0" max="9">
+  
+  <button id="submit-btn" onclick="submitAnswer()">
+    Submit Answer ✓
+  </button>
+  
+  <p id="message"></p>
+</div>
 
     <div class="back-link">
       <a href="dashboard.php">← Back to Dashboard</a>
